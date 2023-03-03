@@ -84,19 +84,36 @@
           
             </div>
             
-            <div class="mr-5 text-center">
-              <label for="estadoCivil"> Estado civil: </label>
+            <div class="mr-5 text-center flex">
               <div>
-                <select name="EstadoCivil" id="EstadoCivil" v-model="EstadoCivil">
+                <div>
+                  <label for="estadoCivil"> Estado civil: </label>
+                </div>
+                <div>
+                  <select name="EstadoCivil" id="EstadoCivil" v-model="EstadoCivil">
                 <option value="1">Soltero</option>
                 <option value="2">Casado</option>
                 <option value="3">Divorciado</option>
                 <option value="4">Separado</option>
                 <option value="5">Union libre</option>
                 <option value="6">Viudo</option>
-              </select>
+                </select>
+                </div>
+              </div>
+        
+            </div>
+
+            <div class="mt-3">
+              <div>
+                <label for="bio"> Biografía: </label>
+              </div>
+              <div>
+                <textarea type="text" name="Bio" id="Bio" v-model="Bio" class="px-2 py-1 rounded-lg mb-3 ml-2 mt-2"
+                rows="5" cols="50">
+                </textarea>
               </div>
               
+                
             </div>
 
 
@@ -139,8 +156,8 @@
           </div>
 
           <div>
-            <label for="bio"> Biografía: </label>
-            <input type="text" name="Bio" id="Bio" v-model="Bio" class="px-2 py-1 rounded-lg mb-3 ml-2">
+            <label for="citaAutor"> Autor de la cita: </label>
+            <input type="text" name="CitaAutor" id="CitaAutor" v-model="CitaAutor" class="px-2 py-1 rounded-lg mb-3 ml-2">
           </div>
 
 
