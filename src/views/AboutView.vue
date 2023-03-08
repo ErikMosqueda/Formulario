@@ -1,6 +1,5 @@
 <script>
   import axios from 'axios'
-  import insertarObjetivos from '../components/agregarObjetivos.vue'
   import InputText from '../components/InputText.vue'
   
   export default {
@@ -23,7 +22,8 @@
         Objetivos: [],
         Frustraciones: [],
         Motivaciones: [],
-        Marcas: " "
+        Marcas: " ",
+        edadcorta: "edad incorrecta",
   
       }
     },
@@ -31,7 +31,6 @@
     mounted() {
     },
     components: {
-      insertarObjetivos,
       InputText
     },
     emits: ['informacion'],
@@ -62,6 +61,10 @@
       AsignacionCitaAutor(s){
         this.CitaAutor = s
         console.log(this.CitaAutor)
+      },
+      AsignacionMarcas(s){
+        this.Marcas = s
+        console.log(this.Marcas)
       },
       
       
@@ -104,17 +107,24 @@
           <label class="font-bold text-2xl">Informacion personal</label>
           <div class=" mt-3 mb-3">
             <label for="nombre"> Nombre: </label>
+            
             <!-- <input type="text" name="nombre" id="nombre" v-model="Nombre" class="px-2 py-1 rounded-lg mb-3 ml-2 mr-2"> -->
             <InputText @informacion="AsignacionNombre"></InputText>
+            <p v-if="Nombre == '' " class="text-red-500"> Ingresa este campo</p>
             <label for="edad"> Edad: </label>
             <!-- <input type="text" name="edad" id="edad" v-model="Edad" class="px-2 py-1 rounded-lg mb-3 ml-2"> -->
-            <InputText @informacion="AsignacionEdad"></InputText>
+            <InputText @informacion="AsignacionEdad" required></InputText>
+            <p v-if="Edad >=100" class="text-red-500"> Edad inválida</p>
+            <p v-if="Edad == 0" class="text-red-500"> Edad inválida</p>
+            <p v-if="Edad == '' " class="text-red-500"> Ingresa este campo</p>
             <div>
                 <label for="trabajo"> Trabajo: </label>
                 <InputText @informacion="AsignacionTrabajo"></InputText>
+                <p v-if="Trabajo == '' " class="text-red-500"> Ingresa este campo</p>
 
                 <label for="residencia"> Residencia: </label>
                 <InputText @informacion="AsignacionResidencia"></InputText>
+                <p v-if="Residencia == '' " class="text-red-500"> Ingresa este campo</p>
           
             </div>
             
@@ -195,11 +205,13 @@
               <div>
                 <label for="cita"> Cita: </label>
                 <InputText @informacion="AsignacionCita"></InputText>
+                <p v-if="Cita == '' " class="text-red-500"> Ingresa este campo</p>
               </div>
               
               <div>
                 <label for="citaAutor"> Autor: </label>
                 <InputText @informacion="AsignacionCitaAutor"></InputText>
+                <p v-if="CitaAutor == '' " class="text-red-500"> Ingresa este campo</p>
               </div>
 
             </div>       
@@ -211,7 +223,7 @@
           <div>
             <label for="objetivos"> Objetivos: </label>
             <input type="text" name="Objetivos" id="Objetivos" v-model="Objetivos" class="px-2 py-1 rounded-lg mb-3 ml-2">
-            //<insertarObjetivos>Insertar</insertarObjetivos>
+            
             
           </div>
 
@@ -227,12 +239,14 @@
 
           <div>
             <label for="marcas"> Marcas: </label>
-            <input type="text" name="Marcas" id=" Marcas" v-model="Marcas" class="px-2 py-1 rounded-lg mb-3 ml-2">
+            <InputText @informacion="AsignacionMarcas"></InputText>
+            <p v-if="Marcas == '' " class="text-red-500"> Ingresa este campo</p>
           </div>
  
                     
           <div class="flex justify-center">
-            <button @click="Registro" class="px-4 py-2 bg-green-200 text-white rounded hover:bg-green-600">
+            <button @click="Registro" class="px-4 py-2 bg-green-300 text-white rounded hover:bg-green-600"
+            v-if=" Edad <100 && Edad != '' ">
             Enviar
           </button>
           </div>
