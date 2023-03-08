@@ -1,5 +1,7 @@
 <script>
   import axios from 'axios'
+  import insertarObjetivos from '../components/agregarObjetivos.vue'
+  import InputText from '../components/InputText.vue'
   
   export default {
   
@@ -14,10 +16,10 @@
         Cita: " ",
         CitaAutor: " ",
         Bio: " ",
-        Personalidad1: " ",
-        Personalidad2: " ",
-        Personalidad3: " ",
-        Personalidad4: " ",
+        Personalidad1: "50",
+        Personalidad2: "50",
+        Personalidad3: "50",
+        Personalidad4: "50",
         Objetivos: [],
         Frustraciones: [],
         Motivaciones: [],
@@ -28,8 +30,40 @@
   
     mounted() {
     },
+    components: {
+      insertarObjetivos,
+      InputText
+    },
+    emits: ['informacion'],
+
   
     methods: {
+      
+      AsignacionNombre(s){
+        this.Nombre = s
+        console.log(this.Nombre)
+      },
+      AsignacionEdad(s){
+        this.Edad = s
+        console.log(this.Edad)
+      },
+      AsignacionTrabajo(s){
+        this.Trabajo = s
+        console.log(this.Trabajo)
+      },
+      AsignacionCita(s){
+        this.Cita = s
+        console.log(this.Cita)
+      },
+      AsignacionResidencia(s){
+        this.Residencia = s
+        console.log(this.Residencia)
+      },
+      AsignacionCitaAutor(s){
+        this.CitaAutor = s
+        console.log(this.CitaAutor)
+      },
+      
       
       Registro() {  
         axios
@@ -70,17 +104,17 @@
           <label class="font-bold text-2xl">Informacion personal</label>
           <div class=" mt-3 mb-3">
             <label for="nombre"> Nombre: </label>
-            <input type="text" name="nombre" id="nombre" v-model="Nombre" class="px-2 py-1 rounded-lg mb-3 ml-2 mr-2">
-          
+            <!-- <input type="text" name="nombre" id="nombre" v-model="Nombre" class="px-2 py-1 rounded-lg mb-3 ml-2 mr-2"> -->
+            <InputText @informacion="AsignacionNombre"></InputText>
             <label for="edad"> Edad: </label>
-            <input type="text" name="edad" id="edad" v-model="Edad" class="px-2 py-1 rounded-lg mb-3 ml-2">
-
+            <!-- <input type="text" name="edad" id="edad" v-model="Edad" class="px-2 py-1 rounded-lg mb-3 ml-2"> -->
+            <InputText @informacion="AsignacionEdad"></InputText>
             <div>
                 <label for="trabajo"> Trabajo: </label>
-                <input type="text" name="Trabajo" id="Trabajo" v-model="Trabajo" class="px-2 py-1 rounded-lg mb-3 ml-2 mr-2">
+                <InputText @informacion="AsignacionTrabajo"></InputText>
 
                 <label for="residencia"> Residencia: </label>
-                <input type="text" name="Residencia" id="Residencia" v-model="Residencia" class="px-2 py-1 rounded-lg mb-3 ml-2">
+                <InputText @informacion="AsignacionResidencia"></InputText>
           
             </div>
             
@@ -118,52 +152,67 @@
 
 
           </div>
-          <label class="font-bold text-2xl">Sentimientos y emociones</label>
-          <div class="">
-            <div class="flex bg-green-600 grid-cols-2">
+          <label class="font-bold text-2xl mb-3">Sentimientos y emociones</label>
+          <div class="flex mt-2">
+
+              <!-- PERSONALIDADES -->
+            <div class="flex grid-cols-2">
               <div></div>
 
               <div class="ml-5 ">
                 <p class="font-bold">Personalidades</p>
                 <div>
                   <label for="personalidad01"> Personalidad 1: </label>
-                  <input type="text" name="Personalidad1" id="Personalidad1" v-model="Personalidad1" class="px-2 py-1 rounded-lg mb-3 ml-2">
+                  <input type="range" name="Personalidad1" id="Personalidad1" v-model="Personalidad1" class="">
+                  {{Personalidad1 }}%
                 </div>
 
                 <div>
                   <label for="personalidad02"> Personalidad 2: </label>
-                  <input type="text" name="Personalidad2" id="Personalidad2" v-model="Personalidad2" class="px-2 py-1 rounded-lg mb-3 ml-2">
+                  <input type="range" name="Personalidad2" id="Personalidad2" v-model="Personalidad2" class="">
+                  {{Personalidad2 }}%
                 </div>
+
                   
                 <div>
                   <label for="personalidad03"> Personalidad 3: </label>
-                  <input type="text" name="Personalidad3" id="Personalidad3" v-model="Personalidad3" class="px-2 py-1 rounded-lg mb-3 ml-2">
+                  <input type="range" name="Personalidad3" id="Personalidad3" v-model="Personalidad3" class="">
+                  {{Personalidad3 }}%
                 </div>
                   
                 <div>
                   <label for="personalidad04"> Personalidad 4: </label>
-                  <input type="text" name="Personalidad4" id="Personalidad4" v-model="Personalidad4" class="px-2 py-1 rounded-lg mb-3 ml-2">
+                  <input type="range" name="Personalidad4" id="Personalidad4" v-model="Personalidad4" class="">
+                  {{Personalidad4 }}%
                 </div>
                   
               </div>
 
             </div>
+
+              <!-- CITA AUTOR CONTENIDO -->
+            <div class=" ml-6 mr-2">
+              <div>
+                <label for="cita"> Cita: </label>
+                <InputText @informacion="AsignacionCita"></InputText>
+              </div>
+              
+              <div>
+                <label for="citaAutor"> Autor: </label>
+                <InputText @informacion="AsignacionCitaAutor"></InputText>
+              </div>
+
+            </div>       
+            
+
           </div>
 
-          <div>
-            <label for="cita"> Cita: </label>
-            <input type="text" name="Cita" id="Cita" v-model="Cita" class="px-2 py-1 rounded-lg mb-3 ml-2">
-          </div>
-
-          <div>
-            <label for="citaAutor"> Autor de la cita: </label>
-            <input type="text" name="CitaAutor" id="CitaAutor" v-model="CitaAutor" class="px-2 py-1 rounded-lg mb-3 ml-2">
-          </div>
-
-
+          
           <div>
             <label for="objetivos"> Objetivos: </label>
             <input type="text" name="Objetivos" id="Objetivos" v-model="Objetivos" class="px-2 py-1 rounded-lg mb-3 ml-2">
+            //<insertarObjetivos>Insertar</insertarObjetivos>
+            
           </div>
 
           <div>
