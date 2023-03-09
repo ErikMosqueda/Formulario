@@ -1,6 +1,7 @@
 <script>
   import axios from 'axios'
   import InputText from '../components/InputText.vue'
+  import InputTextArea from '../components/InputTextArea.vue'
   
   export default {
   
@@ -23,7 +24,9 @@
         Frustraciones: [],
         Motivaciones: [],
         Marcas: " ",
-        edadcorta: "edad incorrecta",
+        contadorObjetivos: 1,
+        contadorFrustaciones: 1,
+        contadorMotivaciones: 1,
   
       }
     },
@@ -31,9 +34,11 @@
     mounted() {
     },
     components: {
-      InputText
+      InputText,
+      InputTextArea,
+   
     },
-    emits: ['informacion'],
+    emits: ['informacion','informacionTextArea','informacionSelect'],
 
   
     methods: {
@@ -66,6 +71,26 @@
         this.Marcas = s
         console.log(this.Marcas)
       },
+      AsignacionBio(s){
+        this.Bio = s
+        console.log(this.Bio)
+      },
+      AsignacionObjetivos(s){
+        this.Objetivos = s
+        console.log(this.Objetivos)
+      },
+      AsignacionFrustaciones(s){
+        this.Frustraciones = s
+        console.log(this.Frustraciones)
+      },
+      AsignacionMotivaciones(s){
+        this.Motivaciones = s
+        console.log(this.Motivaciones)
+      },
+      soloLetras(e){
+        console.log(e)
+
+      },
       
       
       Registro() {  
@@ -94,13 +119,14 @@
           console.log(response.status)
           });
         
-      }
+      },
+       
     },
   }
   
   </script>
   
-  <template>
+  <template >
     <div class="center  justify-center flex">
       <div class=" px-4 py-4 justify-center card-flex shadow-sm bg-gray-300 rounded-lg ">
         <form >
@@ -109,15 +135,15 @@
             <label for="nombre"> Nombre: </label>
             
             <!-- <input type="text" name="nombre" id="nombre" v-model="Nombre" class="px-2 py-1 rounded-lg mb-3 ml-2 mr-2"> -->
-            <InputText @informacion="AsignacionNombre"></InputText>
+            <InputText @informacion="AsignacionNombre" @input="soloLetras" ></InputText>
             <p v-if="Nombre == '' " class="text-red-500"> Ingresa este campo</p>
             <label for="edad"> Edad: </label>
             <!-- <input type="text" name="edad" id="edad" v-model="Edad" class="px-2 py-1 rounded-lg mb-3 ml-2"> -->
-            <InputText @informacion="AsignacionEdad" required></InputText>
+            <InputText @informacion="AsignacionEdad" ></InputText>
             <p v-if="Edad >=100" class="text-red-500"> Edad inválida</p>
             <p v-if="Edad == 0" class="text-red-500"> Edad inválida</p>
             <p v-if="Edad == '' " class="text-red-500"> Ingresa este campo</p>
-            <div>
+            <div class="">
                 <label for="trabajo"> Trabajo: </label>
                 <InputText @informacion="AsignacionTrabajo"></InputText>
                 <p v-if="Trabajo == '' " class="text-red-500"> Ingresa este campo</p>
@@ -135,13 +161,13 @@
                 </div>
                 <div>
                   <select name="EstadoCivil" id="EstadoCivil" v-model="EstadoCivil">
-                <option value="1">Soltero</option>
-                <option value="2">Casado</option>
-                <option value="3">Divorciado</option>
-                <option value="4">Separado</option>
-                <option value="5">Union libre</option>
-                <option value="6">Viudo</option>
-                </select>
+                    <option value="1">Soltero</option>
+                    <option value="2">Casado</option>
+                    <option value="3">Divorciado</option>
+                    <option value="4">Separado</option>
+                    <option value="5">Union libre</option>
+                    <option value="6">Viudo</option>
+                    </select>
                 </div>
               </div>
         
@@ -152,9 +178,8 @@
                 <label for="bio"> Biografía: </label>
               </div>
               <div>
-                <textarea type="text" name="Bio" id="Bio" v-model="Bio" class="px-2 py-1 rounded-lg mb-3 ml-2 mt-2"
-                rows="5" cols="50">
-                </textarea>
+                <InputTextArea @informacionTextArea="AsignacionBio"></InputTextArea>
+                <p v-if="Bio == '' " class="text-red-500"> Ingresa este campo</p>
               </div>
               
                 
@@ -162,6 +187,7 @@
 
 
           </div>
+          
           <label class="font-bold text-2xl mb-3">Sentimientos y emociones</label>
           <div class="flex mt-2">
 
@@ -169,7 +195,7 @@
             <div class="flex grid-cols-2">
               <div></div>
 
-              <div class="ml-5 ">
+              <div class="ml-5">
                 <p class="font-bold">Personalidades</p>
                 <div>
                   <label for="personalidad01"> Personalidad 1: </label>
@@ -221,41 +247,57 @@
 
           
           <div>
-            <label for="objetivos"> Objetivos: </label>
-            <input type="text" name="Objetivos" id="Objetivos" v-model="Objetivos" class="px-2 py-1 rounded-lg mb-3 ml-2">
+            <label for="objetivos" class="text-xl"> Objetivos: </label>
+            <input type="number" v-model="contadorObjetivos">
+           <!--  <select type="number" v-model="contador">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              </select> -->
+            <inputText v-for="p in contadorObjetivos" @informacion="AsignacionObjetivos"></inputText>
+            <p v-if="Objetivos == '' " class="text-red-500"> Ingresa este campo</p>
+            
+            
             
             
           </div>
 
           <div>
-            <label for="frustraciones"> Frustaciones: </label>
-            <input type="text" name="Frustaciones" id="Frutaciones" v-model="Frustraciones" class="px-2 py-1 rounded-lg mb-3 ml-2">
+            <label for="frustraciones" class="text-xl"> Frustraciones: </label>
+            <input type="number" v-model="contadorFrustaciones">
+            <inputText v-for="p in contadorFrustaciones" @informacion="AsignacionFrustaciones"></inputText>
+            <p v-if="Frustraciones == '' " class="text-red-500"> Ingresa este campo</p>
+            
           </div>
 
           <div>
-            <label for="motivaciones"> Motivaciones: </label>
-            <input type="text" name="Motivaciones" id="Motivaciones" v-model="Motivaciones" class="px-2 py-1 rounded-lg mb-3 ml-2">
+            <label for="motivaciones" class="text-xl"> Motivaciones: </label>
+            <input type="number" v-model="contadorMotivaciones">
+            <inputText v-for="p in contadorMotivaciones" @informacion="AsignacionMotivaciones"></inputText>
+            <p v-if="Motivaciones == '' " class="text-red-500"> Ingresa este campo</p>
           </div>
 
           <div>
-            <label for="marcas"> Marcas: </label>
+            <label for="marcas" class="text-xl"> Marcas: </label>
             <InputText @informacion="AsignacionMarcas"></InputText>
             <p v-if="Marcas == '' " class="text-red-500"> Ingresa este campo</p>
           </div>
  
-                    
+                   
           <div class="flex justify-center">
             <button @click="Registro" class="px-4 py-2 bg-green-300 text-white rounded hover:bg-green-600"
-            v-if=" Edad <100 && Edad != '' ">
+            v-if=" Edad <100 && Edad != '' && Marcas != '' ">
             Enviar
           </button>
           </div>
           
         </form>
+        <div class="bg-green-300">
+        </div>
       </div>
-      
     </div>
-    
   </template>
 
 
