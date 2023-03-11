@@ -2,7 +2,9 @@
   import axios from 'axios'
   import InputText from '../components/InputText.vue'
   import InputTextArea from '../components/InputTextArea.vue'
-  
+  import InputObjetivo from '../components/inputObjetivos.vue'
+  import InputFrustracion from '../components/inputFrustraciones.vue'
+  import InputMotivaciones from '../components/inputMotivaciones.vue'
   export default {
   
     data() {
@@ -20,9 +22,12 @@
         Personalidad2: "50",
         Personalidad3: "50",
         Personalidad4: "50",
-        Objetivos: [],
-        Frustraciones: [],
-        Motivaciones: [],
+        newObjetivo:'',
+        newFrustracion:'',
+        newMotivacion:'',
+        Objetivos: [{value:''}],
+        Frustraciones: [{value:''}],
+        Motivaciones: [{value: '','porcentaje':''}],
         Marcas: " ",
         contadorObjetivos: 1,
         contadorFrustaciones: 1,
@@ -36,6 +41,9 @@
     components: {
       InputText,
       InputTextArea,
+      InputObjetivo,
+      InputFrustracion,
+      InputMotivaciones
    
     },
     emits: ['informacion','informacionTextArea','informacionSelect'],
@@ -75,18 +83,20 @@
         this.Bio = s
         console.log(this.Bio)
       },
-      AsignacionObjetivos(s){
-        this.Objetivos = s
-        console.log(this.Objetivos)
-      },
-      AsignacionFrustaciones(s){
-        this.Frustraciones = s
-        console.log(this.Frustraciones)
-      },
-      AsignacionMotivaciones(s){
-        this.Motivaciones = s
-        console.log(this.Motivaciones)
-      },
+      AsignacionObjetivos(s, index){
+      this.Objetivos[index] = {value: s}
+      console.log(this.Objetivos)
+    },
+      AsignacionFrustraciones(s, index){
+      this.Frustraciones[index] = {value: s}
+      console.log(this.Frustraciones)
+    },
+    AsignacionMotivaciones(s,m, index){
+      this.Motivaciones[index] = {value: s,porcentaje: m}
+      console.log(this.Motivaciones)
+    },
+    
+      
       soloLetras(e){
         console.log(e)
 
@@ -127,34 +137,47 @@
   </script>
   
   <template >
-    <div class="center  justify-center flex">
-      <div class=" px-4 py-4 justify-center card-flex shadow-sm bg-gray-300 rounded-lg ">
+    <div class="center  justify-center flex text-center">
+      <div class=" md:w-1-1 w-4/4 lg:w-3/4 px-4 py-4 justify-center card-flex text-center items-center shadow-sm bg-gray-300 rounded-lg ">
         <form >
           <label class="font-bold text-2xl">Informacion personal</label>
-          <div class=" mt-3 mb-3">
-            <label for="nombre"> Nombre: </label>
-            
-            <!-- <input type="text" name="nombre" id="nombre" v-model="Nombre" class="px-2 py-1 rounded-lg mb-3 ml-2 mr-2"> -->
-            <InputText @informacion="AsignacionNombre" @input="soloLetras" ></InputText>
-            <p v-if="Nombre == '' " class="text-red-500"> Ingresa este campo</p>
-            <label for="edad"> Edad: </label>
-            <!-- <input type="text" name="edad" id="edad" v-model="Edad" class="px-2 py-1 rounded-lg mb-3 ml-2"> -->
-            <InputText @informacion="AsignacionEdad" ></InputText>
-            <p v-if="Edad >=100" class="text-red-500"> Edad inválida</p>
-            <p v-if="Edad == 0" class="text-red-500"> Edad inválida</p>
-            <p v-if="Edad == '' " class="text-red-500"> Ingresa este campo</p>
-            <div class="">
-                <label for="trabajo"> Trabajo: </label>
-                <InputText @informacion="AsignacionTrabajo"></InputText>
-                <p v-if="Trabajo == '' " class="text-red-500"> Ingresa este campo</p>
+          <div class=" mt-3 mb-3  justify-center text-center">
+            <div class="flex justify-center">
+              <div>
+                <label for="nombre"> Nombre: </label>
+                <InputText @informacion="AsignacionNombre"></InputText>
+                <p v-if="Nombre == '' " class="text-red-500"> Ingresa este campo</p>
+              </div>
 
-                <label for="residencia"> Residencia: </label>
-                <InputText @informacion="AsignacionResidencia"></InputText>
-                <p v-if="Residencia == '' " class="text-red-500"> Ingresa este campo</p>
-          
+              <div>
+                  <label for="edad"> Edad: </label>
+                  <InputText @informacion="AsignacionEdad" ></InputText>
+                  <p v-if="Edad >=100" class="text-red-500"> Edad inválida</p>
+                  <p v-if="Edad == 0" class="text-red-500"> Edad inválida</p>
+                  <p v-if="Edad == '' " class="text-red-500"> Ingresa este campo</p>
+              </div>
             </div>
             
-            <div class="mr-5 text-center flex">
+            <div class="flex justify-center">
+                <div class="">
+                  <label for="trabajo"> Trabajo: </label>
+                  <InputText @informacion="AsignacionTrabajo"></InputText>
+                  <p v-if="Trabajo == '' " class="text-red-500"> Ingresa este campo</p>
+                </div>
+
+                <div>
+                  
+                  <label for="residencia"> Residencia: </label>
+                  <InputText @informacion="AsignacionResidencia"></InputText>
+                  <p v-if="Residencia == '' " class="text-red-500"> Ingresa este campo</p>
+                </div>
+
+                
+            </div>
+          
+            
+            
+            <div class="mr-5 justify-center flex">
               <div>
                 <div>
                   <label for="estadoCivil"> Estado civil: </label>
@@ -173,7 +196,7 @@
         
             </div>
 
-            <div class="mt-3">
+            <div class="mt-3 justify-center">
               <div>
                 <label for="bio"> Biografía: </label>
               </div>
@@ -189,105 +212,115 @@
           </div>
           
           <label class="font-bold text-2xl mb-3">Sentimientos y emociones</label>
-          <div class="flex mt-2">
+          
+          
+          <div class="flex justify-center mt-2">
 
-              <!-- PERSONALIDADES -->
-            <div class="flex grid-cols-2">
+            <div>
+              <div>
+                <label for="cita"> Cita: </label>
+                <InputText @informacion="AsignacionCita"></InputText>
+                <p v-if="Cita == '' " class="text-red-500"> Ingresa este campo</p>
+              </div>
+            </div>
+
+            <div>
+
+              <div>
+                <label for="citaAutor"> Autor: </label>
+                <InputText @informacion="AsignacionCitaAutor"></InputText>
+                <p v-if="CitaAutor == '' " class="text-red-500"> Ingresa este campo</p>
+              </div>
+            </div>
+          
+            <div>
+              <div>
+                <label for="marcas"> Marcas: </label>
+                <InputText @informacion="AsignacionMarcas"></InputText>
+                <p v-if="Marcas == '' " class="text-red-500"> Ingresa este campo</p>
+              </div>
+            </div>
+
+              <!-- CITA AUTOR CONTENIDO -->
+                  
+            
+
+          </div>
+            <!-- APARTADO DE MOTIVACIONES Y OBEJTIVOS -->
+          <div class=" flex justify-center">
+            <div>
+                <label for="motivaciones" class="text-xl"> Objetivos: </label> 
+                <div v-for="(obj, index) in Objetivos">
+                  <InputObjetivo @informacion="AsignacionObjetivos" :index="index"> </inputObjetivo>
+                  <p v-if="Objetivos == '' " class="text-red-500"> Ingresa este campo</p>
+       
+                </div>
+                <button v-on:click.prevent="this.Objetivos.push(newObjetivo)" class="px-4 py-2 mb-2 bg-gray-600 text-white rounded"> Agregar</button>
+            </div>
+
+            <div>
+               <label for="frustraciones" class="text-xl"> Frustraciones: </label> 
+                <div v-for="(obj, index) in Frustraciones">
+                  <InputFrustracion @informacion="AsignacionFrustraciones" :index="index"> </InputFrustracion>
+                  
+       
+                </div>
+                <button v-on:click.prevent="this.Frustraciones.push(newFrustracion)" class="px-4 py-2 mb-2 bg-gray-600 text-white rounded"> Agregar</button> 
+            </div>
+
+
+          </div>
+          
+          <div>
+            <div class=" justify-center flex mt-5">
               <div></div>
 
               <div class="ml-5">
                 <p class="font-bold">Personalidades</p>
                 <div>
-                  <label for="personalidad01"> Personalidad 1: </label>
+                  <label for="personalidad01" class="text-2xl"> Mente: </label>
                   <input type="range" name="Personalidad1" id="Personalidad1" v-model="Personalidad1" class="">
                   {{Personalidad1 }}%
                 </div>
 
                 <div>
-                  <label for="personalidad02"> Personalidad 2: </label>
+                  <label for="personalidad02" class="text-2xl"> Energía: </label>
                   <input type="range" name="Personalidad2" id="Personalidad2" v-model="Personalidad2" class="">
                   {{Personalidad2 }}%
                 </div>
 
                   
                 <div>
-                  <label for="personalidad03"> Personalidad 3: </label>
+                  <label for="personalidad03" class="text-2xl"> Naturaleza: </label>
                   <input type="range" name="Personalidad3" id="Personalidad3" v-model="Personalidad3" class="">
                   {{Personalidad3 }}%
                 </div>
                   
                 <div>
-                  <label for="personalidad04"> Personalidad 4: </label>
+                  <label for="personalidad04" class="text-2xl"> Tácticas: </label>
                   <input type="range" name="Personalidad4" id="Personalidad4" v-model="Personalidad4" class="">
                   {{Personalidad4 }}%
                 </div>
                   
               </div>
 
+              <div>
+                <label for="motivaciones" class="text-xl"> Motivaciones: </label> 
+                <div v-for="(obj, index) in Motivaciones">
+                  <InputMotivaciones @informacion="AsignacionMotivaciones" :index="index"> </InputMotivaciones>
+                
+                </div>
+                <button v-on:click.prevent="this.Motivaciones.push(newMotivacion)" class="px-4 py-2 mb-2 bg-gray-600 text-white rounded"> Agregar</button>
+                  <!-- AGREGA EL BOTON -->
+              </div>
+
             </div>
-
-              <!-- CITA AUTOR CONTENIDO -->
-            <div class=" ml-6 mr-2">
-              <div>
-                <label for="cita"> Cita: </label>
-                <InputText @informacion="AsignacionCita"></InputText>
-                <p v-if="Cita == '' " class="text-red-500"> Ingresa este campo</p>
-              </div>
-              
-              <div>
-                <label for="citaAutor"> Autor: </label>
-                <InputText @informacion="AsignacionCitaAutor"></InputText>
-                <p v-if="CitaAutor == '' " class="text-red-500"> Ingresa este campo</p>
-              </div>
-
-            </div>       
-            
-
           </div>
-
-          
-          <div>
-            <label for="objetivos" class="text-xl"> Objetivos: </label>
-            <input type="number" v-model="contadorObjetivos">
-           <!--  <select type="number" v-model="contador">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              </select> -->
-            <inputText v-for="p in contadorObjetivos" @informacion="AsignacionObjetivos"></inputText>
-            <p v-if="Objetivos == '' " class="text-red-500"> Ingresa este campo</p>
-            
-            
-            
-            
-          </div>
-
-          <div>
-            <label for="frustraciones" class="text-xl"> Frustraciones: </label>
-            <input type="number" v-model="contadorFrustaciones">
-            <inputText v-for="p in contadorFrustaciones" @informacion="AsignacionFrustaciones"></inputText>
-            <p v-if="Frustraciones == '' " class="text-red-500"> Ingresa este campo</p>
-            
-          </div>
-
-          <div>
-            <label for="motivaciones" class="text-xl"> Motivaciones: </label>
-            <input type="number" v-model="contadorMotivaciones">
-            <inputText v-for="p in contadorMotivaciones" @informacion="AsignacionMotivaciones"></inputText>
-            <p v-if="Motivaciones == '' " class="text-red-500"> Ingresa este campo</p>
-          </div>
-
-          <div>
-            <label for="marcas" class="text-xl"> Marcas: </label>
-            <InputText @informacion="AsignacionMarcas"></InputText>
-            <p v-if="Marcas == '' " class="text-red-500"> Ingresa este campo</p>
-          </div>
+         
  
                    
-          <div class="flex justify-center">
-            <button @click="Registro" class="px-4 py-2 bg-green-300 text-white rounded hover:bg-green-600"
+          <div class="flex justify-center mt-6">
+            <button @click="Registro" class="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-600"
             v-if=" Edad <100 && Edad != '' && Marcas != '' ">
             Enviar
           </button>
